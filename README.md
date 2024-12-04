@@ -26,10 +26,10 @@ Software Tech Stack:
 3. SQLite3 - Database
 
 ### Team
-1. [Darisi Priyatham](https://github.com/DPRIYATHAM) 
-2. [Tanuj Karteek Allena](https://github.com/tanujkarteek)  
-3. [Ajay Krishna](https://github.com/ARTEMIS-AK)
-4. [Revanth](https://github.com/K-Revanth)
+1. [Revanth](https://github.com/K-Revanth)
+2. [Darisi Priyatham](https://github.com/DPRIYATHAM) 
+3. [Tanuj Karteek Allena](https://github.com/tanujkarteek)  
+4. [Ajay Krishna](https://github.com/ARTEMIS-AK)
 5. [Suhas](https://github.com/Suhash270104)
 6. [Shivani](https://github.com/Shivani505001)
 
