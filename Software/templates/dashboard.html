@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="../static/images/logo.png">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div id="navbar">
+        <div class="left-side">
+            <img src="../static/images/logo.png" alt="Logo" id="logo">
+            <h1>A.D.S</h1>
+        </div>
+        <div class="right-side">
+            <a href="/logout" class="nav-button">Logout</a>
+        </div>
+    </div>
+    <h2 style="margin: 2rem;">Welcome {{username}}</h2>
+    <div class="dashspace">
+        <h2>Your available timings:</h2>
+        <textarea id="avb_msg" rows="4" cols="50" required>{{availability_msg}}</textarea><br>
+        <button onclick="sendmsg()" id="sendmsg"><b>Update</b> <i class="fa fa-paper-plane" aria-hidden="true" style="margin-left: 0.5rem;"></i></button><br>
+        <button id="disturbbtn" onclick="disturb()"><b>Do Not disturub</b><i id="moon" class="fas fa-moon" style="margin-left: 0.5rem; color: white;"></i></button>
+        <button id="servicebtn" onclick="service()"><b>Stop service &#10007;</b></button>
+        <h3 id = "status">Status: {{status}}</h3>
+    </div>
+    <script>
+        var socket = io.connect('http://192.168.159.17:80');
+        socket.on('connect', function () {
+            console.log('Connected to server');
+        });
+
+        socket.on('disconnect', function () {
+            console.log('Disconnected from server');
+        });
+
+        socket.on('notification', function (message) {
+            alert(message);
+            console.log('Received notification:', message);
+        });
+
+        var status = "{{status}}";
+        var servicebtn = document.getElementById("servicebtn");
+        var disturbbtn = document.getElementById("disturbbtn");
+        function sendmsg(){
+            var msg = document.getElementById("avb_msg").value;
+            $.ajax({
+                url: "/timings",
+                type: "POST",
+                data: {timings: msg},
+                success: function(response){
+                    alert(response);
+                }
+            });
+        }
+        function update_status (s){
+            document.getElementById("status").innerHTML = "Status: " + s;
+            $.ajax({
+                url: "/status",
+                type: "POST",
+                data: {status: status},
+                success: function(response){
+                    alert(response);
+                }
+            });
+        }
+        function update(){
+            if (status != 'No Data'){
+                servicebtn.style.backgroundColor = "#ccc";
+                servicebtn.style.color = "#000";
+            }
+            else{
+                servicebtn.style.backgroundColor = "red";
+                servicebtn.style.color = "#fff";
+            }
+            if (status != 'Do Not Disturb'){
+                disturbbtn.style.backgroundColor = "#ccc";
+                disturbbtn.style.color = "#000";
+                document.getElementById("moon").style.color = "#000";
+            }
+            else{
+                disturbbtn.style.backgroundColor = "#007bff";
+                disturbbtn.style.color = "#fff";
+                document.getElementById("moon").style.color = "#fff";
+            }
+        }
+        update();
+        function service(){
+            if (status != 'No Data'){
+                status = 'No Data';
+                update_status(status);
+            }
+            else{
+                status = 'Available';
+                update_status(status);
+            }
+            update();
+        }
+        function disturb(){
+            if (status != 'Do Not Disturb'){
+                status = 'Do Not Disturb';
+                update_status(status);
+            }
+            else{
+                status = 'Available';
+                update_status(status);
+            }
+            update();
+        }
+    </script>
+</body>
+</html>

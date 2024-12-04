@@ -1,0 +1,37 @@
+<table id="fac_table">
+    <thead>
+        <tr>
+           <th>Name</th>
+           <th>Email Id</th>
+           <th>Phone Number</th>
+           <th>Cabin</th>
+           <th>Status</th>
+           <th>Availability Info</th>
+        </tr>
+    </thead>
+    <tbody>
+  {% for row in faculty %}  
+     <tr>
+        <td>{{row[0]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+        <td>{{row[3]}}</td>
+        <td>
+            {% if row[4] == 'Available' %}
+                  <span style="color: green;"><b>Available</b></span> <span style="color: green; font-size: 1.2rem;">&bull;</span>
+               {% elif row[4] == 'Not Available' %}
+                  <span style="color: #fbbc04;"><b>Not Available</b></span> <span style="color: yellow; font-size: 1.2rem;">&bull;</span>
+               {% elif row[4] == 'No Data' %}
+                  <span style="color: red;"><b>No Data</b></span> <span style="color: red; font-size: 1.2rem;">&#10007;</span>
+               {% elif row[4] == "Do Not Disturb" %}
+                  <span style="color: rgba(128, 0, 128, 0.801);"><b>Do Not Disturb</b></span> <i class="fas fa-moon" style="color: rgba(128, 0, 128, 0.801);"></i>
+               {% else %}
+                  Unknown Status
+            {% endif %}
+        </td>
+        <td style="max-width: 20rem;">{{row[5]}}</td>
+        <!-- <td><option title='{{row[5]}}'>ⓘ</option></td> -->
+     </tr>
+  {% endfor %}
+    </tbody>
+</table>

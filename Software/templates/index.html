@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.D.S</title>
+    <link rel="icon" type="image/x-icon" href="../static/images/logo.png">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+
+<body>
+    <div id="navbar">
+        <div class="left-side">
+            <img src="../static/images/logo.png" alt="Logo" id="logo">
+            <h1>A.D.S</h1>
+        </div>
+        <div class="right-side">
+            <a href="/login" class="nav-button">Faculty Login</a>
+        </div>
+    </div>
+    <h2 style="margin-left: 1rem;">Welcome to IIIT Kottayam Faculty Presence Service</h2>
+    <div class="fac_det">
+        <input type="text" name="search_text" id="search_text" class="form-control"placeholder="Search Faculty Name">
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // var socket = io.connect('http://192.168.159.17:80');
+        // socket.on('connect', function () {
+        //     console.log('Connected to server');
+        // });
+
+        // socket.on('disconnect', function () {
+        //     console.log('Disconnected from server');
+        // });
+
+        // socket.on('notification', function (message) {
+        //     alert(message);
+        // console.log('Received notification:', message);
+        // });
+
+        $(document).ready(function () {
+            load_data("");  // Load all data by default
+            function load_data(query) {
+                $.ajax({
+                    url: "/search",
+                    method: "POST",
+                    data: { query: query },
+                    success: function (data) {
+                        $('#result').html(data);
+                        $("#result").append(data.htmlresponse);
+                    }
+                });
+            }
+            $('#search_text').keyup(function () {
+                var search = $(this).val();
+                load_data(search);  // Always call load_data with the current search term
+            });
+        });
+    </script>
+</body>
+
+</html>
